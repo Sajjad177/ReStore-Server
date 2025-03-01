@@ -21,4 +21,30 @@ const userValidationSchema = z.object({
   }),
 });
 
-export const userValidation = userValidationSchema;
+const updateUserValidationSchema = z.object({
+  body: z.object({
+    name: z
+      .string({
+        required_error: "Name is required",
+      })
+      .optional(),
+    email: z
+      .string({
+        required_error: "Email is required",
+      })
+      .email()
+      .optional(),
+    phoneNo: z
+      .string({
+        required_error: "Phone number is required",
+      })
+      .optional(),
+    role: z.enum(["admin", "user"]).default("user").optional(),
+    blocked: z.enum(["ban", "unban"]).default("unban").optional(),
+  }),
+});
+
+export const userValidation = {
+  userValidationSchema,
+  updateUserValidationSchema,
+};

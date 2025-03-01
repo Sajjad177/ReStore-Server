@@ -17,28 +17,34 @@ const loginInDB = async (payload: IAuth) => {
     throw new AppError("User not found", StatusCodes.NOT_FOUND);
   }
 
-  const isPasswordMatched = await User.isPasswordMatched(
-    payload.password,
-    user.password as string
-  );
+  const isBlocked = user.blocked as string;
+  if (isBlocked === "ban") {
+    throw new AppError("Your account is blocked", StatusCodes.BAD_REQUEST);
+  }
 
-  if (!isPasswordMatched) {
-    throw new AppError("Password not incorrect", StatusCodes.UNAUTHORIZED);
+  const userPassword = user.password as string;
+  if (!(await User.isPasswordMatched(payload?.password, userPassword))) {
+    throw new AppError("Password is incorrect", StatusCodes.UNAUTHORIZED);
   }
 
   const JwtPayload = {
-    email: user?.email,
-    role: user?.role,
-    userId: user?._id?.toString(),
+    email: user.email as string,
+    role: user.role as string,
+    userId: user._id?.toString() as string,
   };
 
+  console.log("this is jwt payload", JwtPayload);
+
+  // create access token
   const token = createToken(
-    JwtPayload as { email: string; role: string; userId: string },
+    JwtPayload,
     config.jwtAccessTokenExpiresIn as string,
     config.jwtAccessTokenSecret as string
   );
 
-  return token;
+  return {
+    token,
+  };
 };
 
 export const authService = {

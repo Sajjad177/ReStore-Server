@@ -42,6 +42,11 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+userSchema.post("save", function (doc, next) {
+  doc.password = "";
+  next();
+});
+
 // check password is matched
 userSchema.statics.isPasswordMatched = async function (
   password: string,
@@ -55,12 +60,8 @@ userSchema.statics.isUserExist = async function (email: string) {
   return await User.findOne({ email }).select("+password");
 };
 
-// check user is blocked
-userSchema.statics.isUserBlocked = async function (
-  id: string,
-  isBlocked: string
-) {
-  return await User.findOne({ _id: id, blocked: isBlocked });
+userSchema.statics.isUserExistById = async function (id: string) {
+  return await User.findOne({ _id: id }).select("+password");
 };
 
 export const User = model<TUser, UserModel>("User", userSchema);

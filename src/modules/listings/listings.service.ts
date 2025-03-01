@@ -7,7 +7,7 @@ import { User } from "../user/user.schema";
 const createNewProductInDB = async (data: IListings, userId: string) => {
   const user = await User.isUserExistById(userId);
   if (!user) {
-    throw new AppError("User not found----", StatusCodes.NOT_FOUND);
+    throw new AppError("User not found", StatusCodes.NOT_FOUND);
   }
 
   if (user.blocked === "ban") {

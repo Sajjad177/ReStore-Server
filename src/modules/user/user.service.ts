@@ -1,11 +1,22 @@
-import { TUser } from "./user.interface";
 import { User } from "./user.schema";
 
-const createUserInDB = async (data: TUser) => {
-  const result = await User.create(data);
+const getAllUserFromDB = async () => {
+  const result = await User.find({});
+  return result;
+};
+
+const getSingleUserFromDB = async (id: string) => {
+  const result = await User.findById(id);
+  return result;
+};
+
+const deleteUserFromDB = async (id: string) => {
+  const result = await User.findByIdAndDelete(id);
   return result;
 };
 
 export const userService = {
-  createUserInDB,
+  getAllUserFromDB,
+  getSingleUserFromDB,
+  deleteUserFromDB,
 };

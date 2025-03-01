@@ -3,24 +3,43 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { userService } from "./user.service";
 
-const createUser = catchAsync(async (req, res) => {
-  const result = await userService.createUserInDB(req.body);
+const getAllUser = catchAsync(async (req, res) => {
+  const result = await userService.getAllUserFromDB();
 
   sendResponse(res, {
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
     success: true,
-    message: "User created successfully",
-    data: {
-      _id: result._id,
-      name: result.name,
-      email: result.email,
-      phoneNo: result.phoneNo,
-      role: result.role,
-      blocked: result.blocked,
-    },
+    message: "User fetched successfully",
+    data: result,
+  });
+});
+
+const getSingleUser = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await userService.getSingleUserFromDB(id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "User get successfully",
+    data: result,
+  });
+});
+
+const deleteUser = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await userService.deleteUserFromDB(id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "User deleted successfully",
+    data: result,
   });
 });
 
 export const userController = {
-  createUser,
+  getAllUser,
+  getSingleUser,
+  deleteUser,
 };

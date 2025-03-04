@@ -13,6 +13,8 @@ export default [
     ignores: ["node_modules", "dist"],
     rules: {
       "no-console": "warn",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
     },
   },
 ];

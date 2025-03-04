@@ -11,7 +11,11 @@ const messageValidation = z.object({
     receiverId: z.string({
       required_error: "Receiver ID is required",
     }),
-    timestamp: z.date().optional(),
+    image: z
+      .string({
+        required_error: "Image is required",
+      })
+      .optional(),
   }),
 });
 

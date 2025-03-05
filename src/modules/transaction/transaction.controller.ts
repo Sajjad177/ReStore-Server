@@ -34,7 +34,26 @@ const verifyPayment = catchAsync(async (req, res) => {
   });
 });
 
+const getPaurchaseHistory = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const { userId: myUserId } = req.user;
+
+  const result = await transactionService.getPaurchaseHistoryFromDB(
+    userId,
+    myUserId,
+    req.query
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Transaction fetched successfully",
+    data: result,
+  });
+});
+
 export const transactionController = {
   createTransaction,
   verifyPayment,
+  getPaurchaseHistory,
 };

@@ -10,7 +10,7 @@ const router = Router();
 router.post(
   "/",
   auth(USER_ROLE.admin, USER_ROLE.user),
-  validateRequest(listingValidation.listingValidationSchema),
+  // validateRequest(listingValidation.listingValidationSchema),
   listingController.createNewProduct
 );
 

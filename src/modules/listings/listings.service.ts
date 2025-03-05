@@ -4,7 +4,7 @@ import { IListings } from "./listings.interface";
 import { listing } from "./listings.schema";
 import { User } from "../user/user.schema";
 
-const createNewProductInDB = async (data: IListings, userId: string) => {
+const createNewProductInDB = async (listingData: IListings, userId: string) => {
   const user = await User.isUserExistById(userId);
   if (!user) {
     throw new AppError("User not found", StatusCodes.NOT_FOUND);
@@ -14,7 +14,9 @@ const createNewProductInDB = async (data: IListings, userId: string) => {
     throw new AppError("Your account is blocked", StatusCodes.BAD_REQUEST);
   }
 
-  const result = (await listing.create(data)).populate("userID");
+  const result = (
+    await listing.create({ ...listingData, userID: userId })
+  ).populate("userID");
   return result;
 };
 

@@ -5,7 +5,6 @@ const transactionSchema = new Schema(
     buyerID: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
     },
     sellerID: {
       type: Schema.Types.ObjectId,
@@ -17,11 +16,11 @@ const transactionSchema = new Schema(
       ref: "Listing",
       required: true,
     },
-    status: {
-      type: String,
-      enum: ["pending", "completed"],
-      default: "pending",
-    },
+    // status: {
+    //   type: String,
+    //   enum: ["pending", "completed"],
+    //   default: "pending",
+    // },
     paymentStatus: {
       type: String,
       enum: ["pending", "completed"],

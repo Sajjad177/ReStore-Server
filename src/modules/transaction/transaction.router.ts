@@ -17,4 +17,14 @@ router.get(
   transactionController.verifyPayment
 );
 
+
+
+router.get(
+  "/purchases/:userId",
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  transactionController.getPaurchaseHistory
+);
+
+
+
 export const transactionRoutes = router;

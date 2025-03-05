@@ -23,23 +23,12 @@ interface ITransaction {
 }
 
 const createTransactionInDB = async (
-  data: ITransaction,
+  listingData: ITransaction,
   userId: string,
   client_ip: string
 ) => {
-  const {
-    itemID,
-    sellerID,
-    buyerID,
-    transactionId,
-    status,
-    paymentStatus,
-    name,
-    phone,
-    address,
-    city,
-    postalCode,
-  } = data;
+  const { itemID, sellerID, name, phone, address, city, postalCode } =
+    listingData;
 
   if (!userId) {
     throw new AppError("User not found", StatusCodes.NOT_FOUND);
@@ -50,7 +39,12 @@ const createTransactionInDB = async (
     throw new AppError("Item not found", StatusCodes.NOT_FOUND);
   }
 
-  // update listing status to sold
+  // check if item is already sold
+  if (foundItem.status === "sold") {
+    throw new AppError("Item already sold", StatusCodes.BAD_REQUEST);
+  }
+
+  //! update listing status to sold [add this login in verify payment ]
   await listing.findByIdAndUpdate(foundItem._id, {
     $set: {
       status: "sold",
@@ -60,22 +54,19 @@ const createTransactionInDB = async (
   const purchasesData = await Transaction.create({
     itemID,
     sellerID,
-    buyerID,
-    transactionId,
-    status,
+    buyerID: userId,
     name,
     phone,
     address,
     city,
     postalCode,
-    paymentStatus,
     transaction: {
       id: "",
       transactionStatus: "",
     },
   });
 
-  console.log("purchasesData ->", purchasesData);
+  // console.log("purchasesData ->", purchasesData);
 
   // payment gateway integration
   const shurjopayPayload = {
@@ -91,6 +82,8 @@ const createTransactionInDB = async (
   };
 
   const payment = await transactionUtils.makePaymentAsyn(shurjopayPayload);
+
+  console.log("payment ->", payment);
 
   if (payment?.transactionStatus) {
     await Transaction.updateOne(
@@ -124,14 +117,14 @@ const verifyPayment = async (order_id: string) => {
         "transaction.transactionStatus": verifyPayment[0]?.transactionStatus,
         "transaction.method": verifyPayment[0].method,
         "transaction.date_time": verifyPayment[0].date_time,
-        payment_status:
+        paymentStatus:
           verifyPayment[0].bank_status === "Success"
-            ? "Paid"
+            ? "Completed"
             : verifyPayment[0].bank_status === "Failed"
-            ? "Pending"
+            ? "pending"
             : verifyPayment[0].bank_status === "Cancel"
             ? "Cancelled"
-            : "Pending",
+            : "pending",
       }
     );
   }
@@ -139,7 +132,21 @@ const verifyPayment = async (order_id: string) => {
   return verifyPayment;
 };
 
+const getPaurchaseHistoryFromDB = async (
+  userId: string,
+  myUserId: string,
+  query: Record<string, unknown>
+) => {
+  if (userId !== myUserId) {
+    throw new AppError("User not found!", StatusCodes.NOT_FOUND);
+  }
+
+  const result = await Transaction.find(query).populate("itemID");
+  return result;
+};
+
 export const transactionService = {
   createTransactionInDB,
   verifyPayment,
+  getPaurchaseHistoryFromDB,
 };

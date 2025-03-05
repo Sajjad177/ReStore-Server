@@ -39,7 +39,7 @@ const getSingleProduct = catchAsync(async (req, res) => {
 });
 
 const updateListingProduct = catchAsync(async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const result = await listingService.updateListingProductInDB(id, req.body);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -49,9 +49,22 @@ const updateListingProduct = catchAsync(async (req, res) => {
   });
 });
 
+const deletedListingProduct = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  await listingService.deletedListingProductFromDB(id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Product deleted successfully",
+    data: "",
+  });
+});
+
 export const listingController = {
   createNewProduct,
   getAllProduct,
   getSingleProduct,
   updateListingProduct,
+  deletedListingProduct,
 };

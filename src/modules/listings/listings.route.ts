@@ -23,4 +23,6 @@ router.put(
   listingController.updateListingProduct
 );
 
+router.delete("/:id", listingController.deletedListingProduct);
+
 export const listingRoutes = router;

@@ -36,9 +36,15 @@ const updateListingProductInDB = async (
   return result;
 };
 
+const deletedListingProductFromDB = async (id: string) => {
+  const result = await listing.findByIdAndDelete(id);
+  return result;
+};
+
 export const listingService = {
   createNewProductInDB,
   getAllProductFromDB,
   getSingleProductFromDB,
   updateListingProductInDB,
+  deletedListingProductFromDB,
 };

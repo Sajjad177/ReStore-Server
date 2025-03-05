@@ -44,7 +44,6 @@ const createTransactionInDB = async (
     throw new AppError("Item already sold", StatusCodes.BAD_REQUEST);
   }
 
-  //! update listing status to sold [add this login in verify payment ]
   await listing.findByIdAndUpdate(foundItem._id, {
     $set: {
       status: "sold",
@@ -83,7 +82,7 @@ const createTransactionInDB = async (
 
   const payment = await transactionUtils.makePaymentAsyn(shurjopayPayload);
 
-  console.log("payment ->", payment);
+//   console.log("payment ->", payment);
 
   if (payment?.transactionStatus) {
     await Transaction.updateOne(
@@ -145,8 +144,23 @@ const getPaurchaseHistoryFromDB = async (
   return result;
 };
 
+const getSalersHistoryFromDB = async (
+  userId: string,
+  myUserId: string
+  //   query: string
+) => {
+  if (userId !== myUserId) {
+    throw new AppError("User not found!", StatusCodes.NOT_FOUND);
+  }
+  const result = await Transaction.find({ sellerID: userId }).populate(
+    "itemID"
+  );
+  return result;
+};
+
 export const transactionService = {
   createTransactionInDB,
   verifyPayment,
   getPaurchaseHistoryFromDB,
+  getSalersHistoryFromDB,
 };

@@ -14,7 +14,7 @@ router.post(
 router.get(
   "/verify",
   auth(USER_ROLE.admin, USER_ROLE.user),
-  transactionController.verifyPayment
+  transactionController.verifyWithUpdateStatus
 );
 
 router.get(

@@ -21,8 +21,8 @@ const createTransaction = catchAsync(async (req, res) => {
   });
 });
 
-const verifyPayment = catchAsync(async (req, res) => {
-  const order = await transactionService.verifyPayment(
+const verifyWithUpdateStatus = catchAsync(async (req, res) => {
+  const order = await transactionService.verifyWithUpdateStatusInDB(
     req.query.order_id as string
   );
 
@@ -69,9 +69,27 @@ const getSalesHistory = catchAsync(async (req, res) => {
   });
 });
 
+const updateTransactionStatus = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const result = await transactionService.updateTransactionStatusInDB(
+    id,
+    status
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Transaction status updated successfully",
+    data: result,
+  });
+});
+
 export const transactionController = {
   createTransaction,
-  verifyPayment,
+ verifyWithUpdateStatus,
   getPaurchaseHistory,
   getSalesHistory,
+  updateTransactionStatus,
 };

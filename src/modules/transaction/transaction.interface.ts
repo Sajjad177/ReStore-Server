@@ -4,7 +4,7 @@ export interface ITransaction {
   buyerID: mongoose.Types.ObjectId;
   sellerID: mongoose.Types.ObjectId;
   itemID: mongoose.Types.ObjectId;
-  // status: "pending" | "completed";
+  status: "pending" | "completed";
   paymentStatus: "pending" | "completed";
   transaction: {
     id: string;

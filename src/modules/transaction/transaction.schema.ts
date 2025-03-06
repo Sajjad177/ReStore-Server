@@ -16,11 +16,11 @@ const transactionSchema = new Schema(
       ref: "Listing",
       required: true,
     },
-    // status: {
-    //   type: String,
-    //   enum: ["pending", "completed"],
-    //   default: "pending",
-    // },
+    status: {
+      type: String,
+      enum: ["pending", "completed"],
+      default: "pending",
+    },
     paymentStatus: {
       type: String,
       enum: ["pending", "completed"],

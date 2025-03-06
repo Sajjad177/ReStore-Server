@@ -82,7 +82,7 @@ const createTransactionInDB = async (
 
   const payment = await transactionUtils.makePaymentAsyn(shurjopayPayload);
 
-//   console.log("payment ->", payment);
+  //   console.log("payment ->", payment);
 
   if (payment?.transactionStatus) {
     await Transaction.updateOne(
@@ -101,7 +101,7 @@ const createTransactionInDB = async (
   };
 };
 
-const verifyPayment = async (order_id: string) => {
+const verifyWithUpdateStatusInDB = async (order_id: string) => {
   const verifyPayment = await transactionUtils.verifyPaymentAsync(order_id);
 
   if (verifyPayment.length) {
@@ -158,9 +158,37 @@ const getSalersHistoryFromDB = async (
   return result;
 };
 
+const updateTransactionStatusInDB = async (
+  TransactionId: string,
+  status: string
+) => {
+  const transactionItem = await Transaction.findById(TransactionId);
+  if (!transactionItem) {
+    throw new AppError(" Transaction not found", StatusCodes.NOT_FOUND);
+  }
+
+  const listingItem = transactionItem.itemID;
+  if (status === "pending" ) {
+    await listing.findByIdAndUpdate(listingItem._id, {
+      $set: {
+        status: "available",
+      },
+    });
+  }
+
+  const result = await Transaction.updateOne(
+    TransactionId,
+    { status },
+    { new: true }
+  );
+
+  return result;
+};
+
 export const transactionService = {
   createTransactionInDB,
-  verifyPayment,
+  verifyWithUpdateStatusInDB,
   getPaurchaseHistoryFromDB,
   getSalersHistoryFromDB,
+  updateTransactionStatusInDB,
 };

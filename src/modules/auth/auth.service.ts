@@ -33,7 +33,7 @@ const loginInDB = async (payload: IAuth) => {
     userId: user._id?.toString() as string,
   };
 
-  console.log("this is jwt payload", JwtPayload);
+  // console.log("this is jwt payload", JwtPayload);
 
   // create access token
   const token = createToken(

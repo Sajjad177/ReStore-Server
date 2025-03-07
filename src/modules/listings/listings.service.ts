@@ -21,7 +21,11 @@ const createNewProductInDB = async (listingData: IListings, userId: string) => {
 };
 
 const getAllProductFromDB = async () => {
-  const result = await listing.find({}).populate("userID");
+  const result = await listing
+    .find({
+      status: "available",
+    })
+    .populate("userID");
   return result;
 };
 

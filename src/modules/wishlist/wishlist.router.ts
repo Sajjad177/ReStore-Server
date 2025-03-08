@@ -11,5 +11,17 @@ router.post(
   wishListController.addToWishList
 );
 
+router.get(
+  "/:userId",
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  wishListController.getWishList
+);
+
+router.delete(
+  "/:id",
+  auth(USER_ROLE.user, USER_ROLE.admin),
+  wishListController.removeFromWishList
+);
+
 
 export const wishListRoutes = router;

@@ -4,6 +4,7 @@ import { userRoutes } from "../modules/user/user.route";
 import { listingRoutes } from "../modules/listings/listings.route";
 import { messageRoutes } from "../modules/messages/messages.route";
 import { transactionRoutes } from "../modules/transaction/transaction.router";
+import { wishListRoutes } from "../modules/wishlist/wishlist.router";
 
 const router = Router();
 
@@ -27,7 +28,11 @@ const moduleRoutes = [
   {
     path: "/transactions",
     route: transactionRoutes,
-  }
+  },
+  {
+    path: "/wish",
+    route: wishListRoutes,
+  },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

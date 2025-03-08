@@ -155,9 +155,10 @@ const getSalersHistoryFromDB = async (
   if (userId !== myUserId) {
     throw new AppError("User not found!", StatusCodes.NOT_FOUND);
   }
-  const result = await Transaction.find({ sellerID: userId }).populate(
-    "itemID"
-  );
+  const result = await Transaction.find({ sellerID: userId })
+    .populate("itemID")
+    .populate("buyerID")
+    .populate("sellerID");
   return result;
 };
 

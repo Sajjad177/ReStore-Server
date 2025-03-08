@@ -140,7 +140,10 @@ const getPaurchaseHistoryFromDB = async (
     throw new AppError("User not found!", StatusCodes.NOT_FOUND);
   }
 
-  const result = await Transaction.find(query).populate("itemID");
+  const result = await Transaction.find(query)
+    .populate("itemID")
+    .populate("buyerID")
+    .populate("sellerID");
   return result;
 };
 
@@ -168,7 +171,7 @@ const updateTransactionStatusInDB = async (
   }
 
   const listingItem = transactionItem.itemID;
-  if (status === "pending" ) {
+  if (status === "pending") {
     await listing.findByIdAndUpdate(listingItem._id, {
       $set: {
         status: "available",

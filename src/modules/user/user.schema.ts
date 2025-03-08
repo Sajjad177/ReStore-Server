@@ -32,6 +32,7 @@ const userSchema = new Schema<TUser, UserModel>({
     enum: ["ban", "unban"],
     default: "unban",
   },
+  
 });
 
 userSchema.pre("save", async function (next) {

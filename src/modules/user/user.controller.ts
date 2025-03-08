@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { userService } from "./user.service";
+import AppError from "../../error/AppError";
 
 const getAllUser = catchAsync(async (req, res) => {
   const result = await userService.getAllUserFromDB();
@@ -27,9 +28,9 @@ const getSingleUser = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
-  const id = req.params.id;
-  const data = req.body;
-  const result = await userService.updateUserFromDB(id, data);
+  const { id } = req.params;
+  console.log(id);
+  const result = await userService.updateUserFromDB(id, req.body);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,

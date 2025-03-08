@@ -1,5 +1,7 @@
+import config from "../../config";
 import { TUser } from "./user.interface";
 import { User } from "./user.schema";
+import bcrypt from "bcrypt";
 
 const getAllUserFromDB = async () => {
   const result = await User.find({});
@@ -12,6 +14,13 @@ const getSingleUserFromDB = async (id: string) => {
 };
 
 const updateUserFromDB = async (id: string, data: Partial<TUser>) => {
+  if (data.password) {
+    data.password = await bcrypt.hash(
+      data.password,
+      Number(config.bcryptSaltRounds)
+    );
+  }
+
   const result = await User.findByIdAndUpdate(id, data, { new: true });
   return result;
 };

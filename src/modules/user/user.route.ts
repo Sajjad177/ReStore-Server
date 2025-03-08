@@ -11,7 +11,7 @@ router.get("/:id", userController.getSingleUser);
 
 router.put(
   "/:id",
-  validateRequest(userValidation.updateUserValidationSchema),
+  // validateRequest(userValidation.updateUserValidationSchema),
   userController.updateUser
 );
 

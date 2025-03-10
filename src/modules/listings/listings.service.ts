@@ -3,6 +3,7 @@ import AppError from "../../error/AppError";
 import { IListings } from "./listings.interface";
 import { listing } from "./listings.schema";
 import { User } from "../user/user.schema";
+import QueryBuilder from "../builder/Querybuilder";
 
 const createNewProductInDB = async (listingData: IListings, userId: string) => {
   const user = await User.isUserExistById(userId);
@@ -20,12 +21,31 @@ const createNewProductInDB = async (listingData: IListings, userId: string) => {
   return result;
 };
 
-const getAllProductFromDB = async () => {
+const getAllProductAvailableFromDB = async () => {
   const result = await listing
     .find({
       status: "available",
     })
     .populate("userID");
+  return result;
+};
+
+const getAllProductFromDB = async (query: Record<string, unknown>) => {
+  const maxPrice = await listing
+    .findOne()
+    .sort({ price: -1 })
+    .select("price")
+    .exec();
+
+  const maxPriceInListing = maxPrice?.price || 0;
+
+  const listingQuery = new QueryBuilder(listing.find(), query)
+    .search(["title"])
+    .filter()
+    .sort()
+    .filterByPrice(maxPriceInListing);
+
+  const result = await listingQuery.modelQuery.populate("userID");
   return result;
 };
 
@@ -49,6 +69,7 @@ const deletedListingProductFromDB = async (id: string) => {
 
 export const listingService = {
   createNewProductInDB,
+  getAllProductAvailableFromDB,
   getAllProductFromDB,
   getSingleProductFromDB,
   updateListingProductInDB,

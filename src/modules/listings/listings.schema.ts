@@ -16,7 +16,7 @@ const listingSchema = new Schema(
     },
     image: {
       type: String,
-      required: true,
+      enum: ["new", "used"],
     },
     condition: {
       type: String,

@@ -16,9 +16,7 @@ const listingValidationSchema = z.object({
         required_error: "Image is required",
       })
       .optional(),
-    condition: z.string({
-      required_error: "Condition is required",
-    }),
+    condition: z.enum(["new", "used"]),
     userID: z.string({
       required_error: "User ID is required",
     }),
@@ -48,11 +46,7 @@ const updateListingValidationSchema = z.object({
         required_error: "Image is required",
       })
       .optional(),
-    condition: z
-      .string({
-        required_error: "Condition is required",
-      })
-      .optional(),
+    condition: z.enum(["new", "used"]).optional(),
     userID: z
       .string({
         required_error: "User ID is required",

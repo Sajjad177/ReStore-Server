@@ -5,7 +5,7 @@ export interface IListings {
   description: string;
   price: number;
   image?: string;
-  condition: string;
+  condition: "new" | "used";
   userID: mongoose.Types.ObjectId;
   status: "available" | "sold";
 }

@@ -34,8 +34,19 @@ const createNewProduct = catchAsync(async (req, res) => {
   });
 });
 
+const getAllProductAvailable = catchAsync(async (req, res) => {
+  const result = await listingService.getAllProductAvailableFromDB();
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Available Product successfully",
+    data: result,
+  });
+});
+
 const getAllProduct = catchAsync(async (req, res) => {
-  const result = await listingService.getAllProductFromDB();
+  const result = await listingService.getAllProductFromDB(req.query);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
@@ -100,6 +111,7 @@ const deletedListingProduct = catchAsync(async (req, res) => {
 
 export const listingController = {
   createNewProduct,
+  getAllProductAvailable,
   getAllProduct,
   getSingleProduct,
   updateListingProduct,

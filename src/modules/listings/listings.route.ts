@@ -16,7 +16,8 @@ router.post(
   listingController.createNewProduct
 );
 
-router.get("/", listingController.getAllProduct);
+router.get("/", listingController.getAllProductAvailable);
+router.get("/all", listingController.getAllProduct);
 router.get("/:id", listingController.getSingleProduct);
 
 router.put(

@@ -14,6 +14,6 @@ export interface IListings {
     | "electronics"
     | "furniture"
     | "books"
-    | "home appliances"
+    | "home-appliances"
     | "other";
 }

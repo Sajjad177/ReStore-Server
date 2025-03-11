@@ -16,11 +16,10 @@ const listingSchema = new Schema(
     },
     image: {
       type: String,
-      enum: ["new", "used"],
     },
     condition: {
       type: String,
-      required: true,
+      enum: ["new", "used"],
     },
     city: {
       type: String,
@@ -42,7 +41,7 @@ const listingSchema = new Schema(
         "electronics",
         "furniture",
         "books",
-        "home appliances",
+        "home-appliances",
         "other",
       ],
     },

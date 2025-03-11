@@ -7,7 +7,7 @@ import AppError from "../../error/AppError";
 const createNewProduct = catchAsync(async (req, res) => {
   const { userId } = req.user;
 
-  let listingData;
+  let listingData; 
 
   try {
     if (!req.body.data) {
@@ -29,13 +29,14 @@ const createNewProduct = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
     success: true,
-    message: "Product created successfully",
+    message: "listing created successfully",
     data: result,
   });
 });
 
 const getAllProductAvailable = catchAsync(async (req, res) => {
   const { userId } = req.user;
+  console.log(req.user);
   const result = await listingService.getAllProductAvailableFromDB(userId);
 
   sendResponse(res, {

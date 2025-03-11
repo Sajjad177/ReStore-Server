@@ -16,7 +16,7 @@ router.post(
   listingController.createNewProduct
 );
 
-router.get("/", listingController.getAllProductAvailable);
+router.get("/", auth(USER_ROLE.admin, USER_ROLE.user), listingController.getAllProductAvailable);
 router.get("/all", listingController.getAllProduct);
 router.get("/:id", listingController.getSingleProduct);
 

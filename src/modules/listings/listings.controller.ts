@@ -35,7 +35,8 @@ const createNewProduct = catchAsync(async (req, res) => {
 });
 
 const getAllProductAvailable = catchAsync(async (req, res) => {
-  const result = await listingService.getAllProductAvailableFromDB();
+  const { userId } = req.user;
+  const result = await listingService.getAllProductAvailableFromDB(userId);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,

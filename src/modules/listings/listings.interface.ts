@@ -6,6 +6,14 @@ export interface IListings {
   price: number;
   image?: string;
   condition: "new" | "used";
+  city: string;
   userID: mongoose.Types.ObjectId;
   status: "available" | "sold";
+  category:
+    | "clothing"
+    | "electronics"
+    | "furniture"
+    | "books"
+    | "home appliances"
+    | "other";
 }

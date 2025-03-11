@@ -36,7 +36,7 @@ const createTransactionInDB = async (
 
   const foundItem = await listing.findById(itemID);
   if (!foundItem) {
-    throw new AppError("Item not found", StatusCodes.NOT_FOUND);
+    throw new AppError("Item not found there", StatusCodes.NOT_FOUND);
   }
 
   // check if item is already sold
@@ -166,26 +166,28 @@ const updateTransactionStatusInDB = async (
   TransactionId: string,
   status: string
 ) => {
-  const transactionItem = await Transaction.findById(TransactionId);
-  if (!transactionItem) {
-    throw new AppError(" Transaction not found", StatusCodes.NOT_FOUND);
+  const transaction = await Transaction.findById(TransactionId);
+
+  if (!transaction) {
+    throw new AppError("Transaction not found", StatusCodes.NOT_FOUND);
   }
 
-  const listingItem = transactionItem.itemID;
-  if (status === "pending") {
-    await listing.findByIdAndUpdate(listingItem._id, {
+  const result = await Transaction.findOneAndUpdate(
+    {
+      _id: TransactionId,
+    },
+    {
       $set: {
-        status: "available",
+        status,
       },
-    });
-  }
-
-  const result = await Transaction.updateOne(
-    TransactionId,
-    { status },
+    },
     { new: true }
-  );
+  ).populate("itemID");
+  return result;
+};
 
+const deleteTransactionFromDB = async (TransactionId: string) => {
+  const result = await Transaction.findByIdAndDelete(TransactionId);
   return result;
 };
 
@@ -195,4 +197,5 @@ export const transactionService = {
   getPaurchaseHistoryFromDB,
   getSalersHistoryFromDB,
   updateTransactionStatusInDB,
+  deleteTransactionFromDB,
 };

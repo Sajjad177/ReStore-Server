@@ -29,6 +29,16 @@ router.get(
   transactionController.getSalesHistory
 );
 
-export const transactionRoutes = router;
+router.delete(
+  "/:id",
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  transactionController.deleteTransaction
+);
 
-// ekon o 2 ta router a kaj baki ache get-> /sales/:userId ar put-> /purchases/:userId
+router.put(
+  "/:id",
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  transactionController.updateTransactionStatus
+);
+
+export const transactionRoutes = router;

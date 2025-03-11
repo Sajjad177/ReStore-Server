@@ -86,10 +86,23 @@ const updateTransactionStatus = catchAsync(async (req, res) => {
   });
 });
 
+const deleteTransaction = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  await transactionService.deleteTransactionFromDB(id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Transaction deleted successfully",
+    data: "",
+  });
+});
+
 export const transactionController = {
   createTransaction,
- verifyWithUpdateStatus,
+  verifyWithUpdateStatus,
   getPaurchaseHistory,
   getSalesHistory,
   updateTransactionStatus,
+  deleteTransaction,
 };

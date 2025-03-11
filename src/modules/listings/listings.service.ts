@@ -21,7 +21,14 @@ const createNewProductInDB = async (listingData: IListings, userId: string) => {
   return result;
 };
 
-const getAllProductAvailableFromDB = async () => {
+const getAllProductAvailableFromDB = async (userId: string) => {
+  if (userId) {
+    const user = await User.isUserExistById(userId);
+    if (!user) {
+      throw new AppError("User not found", StatusCodes.NOT_FOUND);
+    }
+  } 
+
   const result = await listing
     .find({
       status: "available",

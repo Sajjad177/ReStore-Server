@@ -22,6 +22,10 @@ const listingSchema = new Schema(
       type: String,
       required: true,
     },
+    city: {
+      type: String,
+      required: true,
+    },
     userID: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -30,6 +34,17 @@ const listingSchema = new Schema(
       type: String,
       enum: ["available", "sold"],
       default: "available",
+    },
+    category: {
+      type: String,
+      enum: [
+        "clothing",
+        "electronics",
+        "furniture",
+        "books",
+        "home appliances",
+        "other",
+      ],
     },
   },
   {

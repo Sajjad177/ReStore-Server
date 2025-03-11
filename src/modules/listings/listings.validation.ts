@@ -21,6 +21,14 @@ const listingValidationSchema = z.object({
       required_error: "User ID is required",
     }),
     status: z.enum(["available", "sold"]).default("available"),
+    category: z.enum([
+      "clothing",
+      "electronics",
+      "furniture",
+      "books",
+      "home appliances",
+      "other",
+    ]),
   }),
 });
 
@@ -53,6 +61,16 @@ const updateListingValidationSchema = z.object({
       })
       .optional(),
     status: z.enum(["available", "sold"]).default("available").optional(),
+    category: z
+      .enum([
+        "clothing",
+        "electronics",
+        "furniture",
+        "books",
+        "home-appliances",
+        "other",
+      ])
+      .optional(),
   }),
 });
 

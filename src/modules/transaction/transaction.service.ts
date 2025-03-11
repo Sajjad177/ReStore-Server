@@ -140,7 +140,10 @@ const getPaurchaseHistoryFromDB = async (
     throw new AppError("User not found!", StatusCodes.NOT_FOUND);
   }
 
-  const result = await Transaction.find(query)
+
+  const result = await Transaction.find({
+    buyerID: userId,
+  })
     .populate("itemID")
     .populate("buyerID")
     .populate("sellerID");

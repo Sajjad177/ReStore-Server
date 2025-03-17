@@ -3,7 +3,7 @@
 
 ## 📜 Project Overview :
 
-- **Project Concept** :This backend for blog. There a user can write a blog, read any blog. There we handling search by title, filter by any user and sorting by blog upload time.
+- **Project Concept** :This backend for for restore website. Here user can buy and sell there product with dashboard.
   <br/>
 
 ## 🛠 Technology Used : 
